@@ -1,1 +1,714 @@
 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>AutoML</title>
+    <meta name="keywords" content="data science, machine learning, deep learning, auto ml " />
+    <meta
+      name="description"
+      content="Auto ml. It will perform auto ml and will give you code so that you can use it
+      for you work."
+    />
+    <meta name="author" content="Rafsun Ahmad" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  </head>
+  <body>
+    <div class="menubarWholeContainer">
+      <p class="TitleEffect titleBasicCss"></p>
+
+      <div id="navBarId" class="navigationBar">
+        <div id="dropDownContainerId2" class="dropdownContainer">
+          <a href="https://codersaim.com/htmlfiles/data-science/data-science-introduction.html"
+            >Beginner to professional data science free course</a
+          >
+        </div>
+      </div>
+      <div id="menuIconId" class="menuIcon" onclick="menuShow()"><i class="fa fa-bars"></i></div>
+    </div>
+    <div class="headingDiv">
+      <h1 class="animate-charcter">Welcome to auto ml</h1>
+      <div class="h2container">
+        <h2 class="title">
+          <span class="title-word title-word-1">Pass the data,</span>
+          <span class="title-word title-word-2">fill the form</span>
+          <span class="title-word title-word-3"> and see</span>
+          <span class="title-word title-word-4">the magic</span>
+        </h2>
+      </div>
+    </div>
+    <div class="mainDiv">
+      <div class="imageDiv">
+        <img
+          src="{{ url_for('static', filename='rafsun2.jpg') }}"
+          alt="Sorry for the problem. It will resolve as soon as possible"
+        />
+        <p class="imgDivMyName neonEffect">Rafsun Ahmad</p>
+        <p class="imgDivMyName2 neonEffect">Founder</p>
+      </div>
+      <div class="textDiv">
+        <h3>Hi, I'M <span class="neonEffect">Rafsun Ahmad</span></h3>
+        <p class="home_Txt">
+          I'm the founder and CEO of this this website. This is a auto ml project. Pass the dataset and fill the form
+          according to the given instruction. Then you will get a python file where you will get all the necessary codes
+          to perform machine learning using the given dataset. You can use that code in your project. Here all the task
+          will be performed automatically and the target is to get the best accuracy. <br /><br />
+          <span class="suppostTxt neonEffect"
+            >Keep support me....
+            <a href="https://github.com/Rafsun001" class="neonEffect social_links"><i class="fa fa-github"></i></a>
+            <a href="mailto:ahmadrafsun001@gmail.com?&subject=CodersAim.com" class="neonEffect social_links"
+              ><i class="fa fa-envelope"></i
+            ></a>
+            <a href="https://www.linkedin.com/in/rafsun-ahmad-3222051b9/" class="neonEffect social_links"
+              ><i class="fa fa-linkedin"></i
+            ></a>
+            <a href="https://www.instagram.com/rafsunking001" class="neonEffect social_links"
+              ><i class="fa fa-instagram"></i
+            ></a>
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div class="formContainer">
+      <form id="myForm" method="post" enctype="multipart/form-data" action="{{ url_for('upload') }}">
+        <h1 class="formHeading">Fill the form data correctly</h1>
+        <div class="formInnerWholeCOntainer">
+          <div class="lblNfieldContainer">
+            <div class="lblNfieldContainer">
+              <label for="file">CSV file:</label><br />
+              <input onclick="displayAlert()" type="radio" name="file_option" value="upload" id="uploadOption" style="color: white; background: #30336b"/>
+              Upload your own file<br />
+              <input
+                onchange="refreshPage()"
+                type="radio"
+                name="file_option"
+                value="existing"
+                id="existingOption"
+                checked style="color: white; background: #30336b"
+              />
+              Use test datasets<br /><br />
+              <input class="fileSelector" type="file" name="file" id="file" accept=".csv" style="display: none" />
+              <select name="existing_file" onchange="setDefaultValues()" id="existingFile">
+                <option value="none">None</option>
+                <br />
+                <option value="Classification diabetes">Classification diabetes</option>
+                <br />
+                <option value="Regression car data">Regression car data</option>
+                <br />
+                <option value="Classification Iris">Classification Iris</option>
+                <br />
+                <option value="Regression restaurant bill">Regression restaurant bill</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="lblNfieldContainer">
+            <label>Select problem type:</label><br /><br />
+            <select class="slecttype" name="operation" id="mySelect" onchange="showCheckboxes()">
+              <option value="none">none</option>
+              <option value="regression">Regression</option>
+              <option value="binary_classification">Binary Classification</option>
+              <option value="multi_class_classification">Multi-class Classification</option>
+              <option value="text_classification">Text Classification</option>
+            </select>
+          </div>
+          <div class="lblNfieldContainer">
+            <label for="target_col_name"> Target column name:</label>
+            <div class="container">
+              <input class="trigger" type="text" id="target_col_name" name="target_col_name" required />
+              <div class="content">
+                <span class="instructionTXT">Follow the instruction</span><br />
+                Pass the column name which you want to use as a target column from the dataset.
+              </div>
+            </div>
+          </div>
+
+          <div class="lblNfieldContainer">
+            <label for="drop_col_nm"> Column names to drop: </label><br />
+            <div class="container">
+              <input class="trigger" type="text" id="drop_col_nm" name="drop_col_nm" required />
+              <div class="content">
+                <span class="instructionTXT">Follow the instruction</span><br />
+                If you want to drop column from the dataset then pass those columns names which you want to drop.
+                <b style="color: rgb(7, 150, 91)">Use comma between two columns names.</b>
+                <span style="color: blue">If you don't want to drop any column then pass none</span> <br />
+                Example: columns1,column2
+              </div>
+            </div>
+          </div>
+
+          <div class="lblNfieldContainer">
+            <label for="dateTimeColsNames">Date-time columns name:<br /> </label>
+            <div class="container">
+              <input class="trigger" type="text" id="dateTimeColsNames" name="dateTimeColsNames" required />
+              <div class="content">
+                <span class="instructionTXT">Follow the instruction</span><br />
+                If your dataset contain date-time columns then pass the column names. If any only column contain only
+                year or month or day without complete date time format then don't pass those column name.
+                <b style="color: rgb(7, 150, 91)">Use comma between two column names.</b>
+                <span style="color: blue">If there is no such column then pass none</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="lblNfieldContainer">
+            <label for="drop_nan_col_bound"> Missing value percentage to drop column:</label>
+            <div class="container">
+              <input class="trigger" type="number" id="drop_nan_col_bound" name="drop_nan_col_bound" required />
+              <div class="content">
+                <span class="instructionTXT">Follow the instruction</span><br />
+
+                If a column contain high percentage of missing values then it doesn't matter which way you fill that
+                column it can cause of bad accuracy. If a column contain more percent of missing value then the column
+                will dropped. Pass the threshold value of missing value percentage. If a column contain missing value
+                above the threshold value then that will be dropped <br />
+                Example: 25
+              </div>
+            </div>
+          </div>
+
+          <div class="lblNfieldContainer">
+            <label for="num_col_nm_strip">Column names want as numerical:</label>
+            <div class="container">
+              <input class="trigger" type="text" id="num_col_nm_strip" name="num_col_nm_strip" required />
+              <div class="content">
+                <span class="instructionTXT">Follow the instruction</span><br />
+                Pass the column names which data type you want as int64 or float64.
+                <b style="color: rgb(7, 150, 91)">Use comma between two column names.</b>
+                <span style="color: blue">If no such column present then pass none.</span><br />
+                Example: column1,column2,column3
+              </div>
+            </div>
+          </div>
+
+          <div class="lblNfieldContainer">
+            <label for="num_col_nm_strip_2">Column names want as categorical: </label>
+            <div class="container">
+              <input class="trigger" type="text" id="num_col_nm_strip_2" name="num_col_nm_strip_2" required />
+              <div class="content">
+                <span class="instructionTXT">Follow the instruction</span><br />
+                Pass the column names which data type you want as object.<b style="color: rgb(7, 150, 91)"
+                  >Use comma between two column names.</b
+                >
+                <span style="color: blue">If no such column present then pass none.</span><br />
+                Example: column1,column2,column3
+              </div>
+            </div>
+          </div>
+
+          <div class="lblNfieldContainer">
+            <label for="rank_col">Column names contain rank type values: </label>
+            <div class="container">
+              <input class="trigger" type="text" id="rank_col" name="rank_col" required />
+
+              <div class="content">
+                <span class="instructionTXT">Follow the instruction</span><br />
+                If any column contains rank type values like A+, B+, C+ or bad, good, very good, etc then pass those
+                column names. <b style="color: rgb(7, 150, 91)"> Use comma between two column names.</b
+                ><span style="color: blue">If no such column present then pass none.</span> <br />
+                Example:column1,column2<br />
+              </div>
+            </div>
+          </div>
+
+          <div class="lblNfieldContainer">
+            <label for="columns_to_split">Column names want to split:</label>
+            <div class="container">
+              <input class="trigger" type="text" id="columns_to_split" name="columns_to_split" required />
+
+              <div class="content">
+                <span class="instructionTXT">Follow the instruction</span><br />
+                If you want to split any column then pass those column names.
+                <b style="color: rgb(7, 150, 91)">Use comma between two column names.</b>
+                <span style="color: blue">If don't want to split any column pass none.</span><br />
+                Example: column2,column5<br />
+              </div>
+            </div>
+          </div>
+
+          <div class="lblNfieldContainer">
+            <label for="delimiters">Delimiters for split column: </label>
+            <div class="container">
+              <input class="trigger" type="text" id="delimiters" name="delimiters" required />
+              <div class="content">
+                <span class="instructionTXT">Follow the instruction</span><br />
+                Pass the delimiters of those columns which you want to split. Pass the delimiters according to the
+                column names you passed in previous field. Because first delimiters will used for first column that you
+                passed in previous field. Similarly for other.<b style="color: rgb(7, 148, 150)">
+                  If the delimiter is space then type space.</b
+                >
+                <b style="color: rgb(7, 150, 91)">Use |-| between two delimiters.</b
+                ><span style="color: blue"> If you don't want to split any column then pass none.</span>
+                then pass none.
+              </div>
+            </div>
+          </div>
+
+          <div class="lblNfieldContainer">
+            <label for="too_many_unique_values">What to do if column has high cardinality: </label>
+            <div class="container">
+              <input class="trigger" type="text" id="too_many_unique_values" name="too_many_unique_values" required />
+              <div class="content">
+                <span class="instructionTXT">Follow the instruction</span><br />
+                If a column contain so many unique values in a categorical then it want create problem of curse of dimensionality after encoding. <br />
+                <b style="color: rgb(7, 148, 150)">Pass you decision:</b><br />
+                1.drop<br />
+                2. Pass number of how many unique values that you want to keep and others will be converted into a one
+                unique value.<br />
+                3. default. If a column unique value= number of rows then the column will be dropped and if column
+                unique values&lt;=60 then only 60 unique value will be taken.(can lose data)<br />
+                4. Pass none. if you want to keep it as it is.
+              </div>
+            </div>
+          </div>
+
+          <div class="lblNfieldContainer" id="checkboxContainer"></div>
+          <div class="lblNfieldContainer">
+            <input type="submit" value="Upload" onclick="showDiv()" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="outputML" id="additional-div" style="display: none">
+      <div class="outputMLinnerDiv">
+        <h1>
+          Be patient. The process is running. It can take time around 10-25 min according to your data.
+          <span style="color: red">A python file will automatically get downloaded.</span> Where all the code will be
+          written which are needed to train the model. You can use that code and also modify it according to your need.
+        </h1>
+        <!--<a href="{{ file_path }}" download>Download File</a>-->
+      </div>
+    </div>
+    <div class="footerContainer">
+      <p class="footerFirstTxt">
+        AutoML is created generate machine learning code automatically using the given dataset. Enjoy your journey and
+        keep support us.
+      </p>
+      <p class="footerCopyRightText">
+        &copy; Copyright All rights reserved www.automl.com. Developed by
+        <span>AutoML</span>.
+      </p>
+      <div class="footerLinks"></div>
+    </div>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+    <!--According to the ML problem type selection the steps check box will show -->
+    <script>
+      function showCheckboxes() {
+        var selectedOption = document.getElementById("mySelect").value;
+        var checkboxContainer = document.getElementById("checkboxContainer");
+
+        // Clear any existing checkboxes
+        checkboxContainer.innerHTML = "";
+
+        // Create and append checkboxes based on the selected option
+        if (selectedOption === "regression") {
+          checkboxContainer.innerHTML +=
+            "<label>Steps will perform: Uncheck if you do not want to perform that step</label><br />";
+
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option1" name="additional_options[]" value="option1" checked />';
+          checkboxContainer.innerHTML += '<label for="option1" class="chekcboxLable">Data cleaning</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option2" name="additional_options[]" value="option2" checked />';
+          checkboxContainer.innerHTML += '<label for="option2" class="chekcboxLable">Outliers Handling</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option3" name="additional_options[]" value="option3" checked />';
+          checkboxContainer.innerHTML +=
+            '<label for="option3" class="chekcboxLable">Handling too many unique value contain categorical column</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option4" name="additional_options[]" value="option4" checked />';
+          checkboxContainer.innerHTML += '<label for="option4" class="chekcboxLable">EDA</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option5" name="additional_options[]" value="option5" checked />';
+          checkboxContainer.innerHTML +=
+            '<label for="option5" class="chekcboxLable">Dropping low variance features</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option6" name="additional_options[]" value="option6" checked />';
+          checkboxContainer.innerHTML +=
+            '<label for="option6" class="chekcboxLable"> Handling Multicollinearity using VIF</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option7" name="additional_options[]" value="option7" checked />';
+          checkboxContainer.innerHTML +=
+            '<label for="option7" class="chekcboxLable">Feature selection using RFE</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option8" name="additional_options[]" value="option8" checked />';
+          checkboxContainer.innerHTML += '<label for="option8" class="chekcboxLable">Parameter Tuning</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option9" name="additional_options[]" value="option9" checked />';
+          checkboxContainer.innerHTML += '<label for="option9" class="chekcboxLable">Model evaluation</label>';
+        } else if (selectedOption === "multi_class_classification") {
+          checkboxContainer.innerHTML +=
+            "<label>Steps will perform: Uncheck if you do not want to perform that step</label><br />";
+
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option1" name="additional_options[]" value="option1" checked />';
+          checkboxContainer.innerHTML += '<label for="option1" class="chekcboxLable">Data cleaning</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option2" name="additional_options[]" value="option2" checked />';
+          checkboxContainer.innerHTML += '<label for="option2" class="chekcboxLable">Outliers Handling</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option3" name="additional_options[]" value="option3" checked />';
+          checkboxContainer.innerHTML +=
+            '<label for="option3" class="chekcboxLable">Handling too many unique value contain categorical column</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option4" name="additional_options[]" value="option4" checked />';
+          checkboxContainer.innerHTML += '<label for="option4" class="chekcboxLable">EDA</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option5" name="additional_options[]" value="option5" checked />';
+          checkboxContainer.innerHTML +=
+            '<label for="option5" class="chekcboxLable">Dropping low variance features</label><br />';
+
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option7" name="additional_options[]" value="option7" checked />';
+          checkboxContainer.innerHTML +=
+            '<label for="option7" class="chekcboxLable">Feature selection using RFE</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option8" name="additional_options[]" value="option8" checked />';
+          checkboxContainer.innerHTML += '<label for="option8" class="chekcboxLable">Parameter Tuning</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option9" name="additional_options[]" value="option9" checked />';
+          checkboxContainer.innerHTML += '<label for="option9" class="chekcboxLable">Model evaluation</label>';
+        } else if (selectedOption === "binary_classification") {
+          checkboxContainer.innerHTML +=
+            "<label>Steps will perform: Uncheck if you do not want to perform that step</label><br />";
+
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option1" name="additional_options[]" value="option1" checked />';
+          checkboxContainer.innerHTML += '<label for="option1" class="chekcboxLable">Data cleaning</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option2" name="additional_options[]" value="option2" checked />';
+          checkboxContainer.innerHTML += '<label for="option2" class="chekcboxLable">Outliers Handling</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option3" name="additional_options[]" value="option3" checked />';
+          checkboxContainer.innerHTML +=
+            '<label for="option3" class="chekcboxLable">Handling too many unique value contain categorical column</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option4" name="additional_options[]" value="option4" checked />';
+          checkboxContainer.innerHTML += '<label for="option4" class="chekcboxLable">EDA</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option5" name="additional_options[]" value="option5" checked />';
+          checkboxContainer.innerHTML +=
+            '<label for="option5" class="chekcboxLable">Dropping low variance features</label><br />';
+
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option7" name="additional_options[]" value="option7" checked />';
+          checkboxContainer.innerHTML +=
+            '<label for="option7" class="chekcboxLable">Feature selection using RFE</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option8" name="additional_options[]" value="option8" checked />';
+          checkboxContainer.innerHTML += '<label for="option8" class="chekcboxLable">Parameter Tuning</label><br />';
+          checkboxContainer.innerHTML +=
+            '<input type="checkbox" id="option9" name="additional_options[]" value="option9" checked />';
+          checkboxContainer.innerHTML += '<label for="option9" class="chekcboxLable">Model evaluation</label>';
+        } else if (selectedOption === "Text Classification") {
+          pass;
+        }
+      }
+    </script>
+    <!--If click on upload then track div will display-->
+    <script>
+      function showDiv() {
+        var div = document.getElementById("additional-div");
+        div.style.display = "block";
+      }
+    </script>
+    <script>
+      var uploadOption = document.getElementById("uploadOption");
+      var existingOption = document.getElementById("existingOption");
+      var uploadFile = document.getElementById("file");
+      var existingFile = document.getElementById("existingFile");
+
+      uploadOption.addEventListener("change", function () {
+        uploadFile.style.display = "block";
+        existingFile.style.display = "none";
+      });
+      existingOption.addEventListener("change", function () {
+        uploadFile.style.display = "none";
+        existingFile.style.display = "block";
+      });
+    </script>
+    <!--alert box-->
+    <script>
+      var isAlertDisplayed = false; // Flag variable to track if alert has been displayed
+
+      function displayAlert() {
+        // Check if the checkbox is checked
+        var checkbox = document.getElementById("uploadOption");
+        if (checkbox.checked && !isAlertDisplayed) {
+          // Display the alert box with the warning message
+          alert(
+            "Warning: This is a personal project and it is in developping stage. If you are here for testing purpose then use test dataset or if you want to use your own dataset then use small dataset, so that you can get output quickly"
+          );
+          isAlertDisplayed = true; // Set the flag to true after displaying the alert
+        }
+      }
+    </script>
+    <!--autofill field-->
+    <script>
+      function setDefaultValues() {
+        var field11 = "Outcome";
+        var field12 = "none";
+        var field13 = "none";
+        var field14 = 20;
+        var field15 = "Pregnancies,Glucose,BloodPressure,SkinThickness,Insulin,BMI,DiabetesPedigreeFunction,Age";
+        var field16 = "none";
+        var field17 = "none";
+        var field18 = "none";
+        var field19 = "none";
+        var field20 = "none";
+
+        var field21 = "Selling_Price";
+        var field22 = "none";
+        var field23 = "none";
+        var field24 = "20";
+        var field25 = "Year,Selling_Price,Present_Price,Kms_Driven,Owner";
+        var field26 = "Car_Name,Fuel_Type,Seller_Type,Transmission";
+        var field27 = "none";
+        var field28 = "none";
+        var field29 = "none";
+        var field30 = "none";
+
+        var field31 = "Species";
+        var field32 = "Id";
+        var field33 = "none";
+        var field34 = "20";
+        var field35 = "SepalLengthCm,SepalWidthCm,PetalLengthCm,PetalWidthCm";
+        var field36 = "none";
+        var field37 = "none";
+        var field38 = "none";
+        var field39 = "none";
+        var field40 = "none";
+
+        var field41 = "total_bill";
+        var field42 = "none";
+        var field43 = "none";
+        var field44 = "20";
+        var field45 = "total_bill,tip,size";
+        var field46 = "sex,time,day,smoker";
+        var field47 = "none";
+        var field48 = "none";
+        var field49 = "none";
+        var field50 = "none";
+
+        var field1 = document.getElementById("target_col_name");
+        var field2 = document.getElementById("drop_col_nm");
+        var field3 = document.getElementById("dateTimeColsNames");
+        var field4 = document.getElementById("drop_nan_col_bound");
+        var field5 = document.getElementById("num_col_nm_strip");
+        var field6 = document.getElementById("num_col_nm_strip_2");
+        var field7 = document.getElementById("rank_col");
+        var field8 = document.getElementById("columns_to_split");
+        var field9 = document.getElementById("delimiters");
+        var field10 = document.getElementById("too_many_unique_values");
+
+        var selectedOption = document.getElementsByName("existing_file")[0].value;
+        var option2Dropdown = document.getElementsByName("operation")[0];
+
+        var selectedOption2 = document.getElementById("mySelect").value;
+        var checkboxContainer2 = document.getElementById("checkboxContainer");
+        // Clear any existing checkboxes
+        checkboxContainer2.innerHTML = "";
+
+        for (var i = 0; i < option2Dropdown.options.length; i++) {
+          option2Dropdown.options[i].removeAttribute("selected");
+        }
+
+        if (selectedOption === "Classification diabetes") {
+          option2Dropdown.options[2].setAttribute("selected", "selected");
+          checkboxContainer2.innerHTML +=
+            "<label>Steps will perform: Uncheck if you do not want to perform that step</label><br />";
+
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option1" name="additional_options[]" value="option1" checked />';
+          checkboxContainer2.innerHTML += '<label for="option1" class="chekcboxLable">Data cleaning</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option2" name="additional_options[]" value="option2" checked />';
+          checkboxContainer2.innerHTML += '<label for="option2" class="chekcboxLable">Outliers Handling</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option3" name="additional_options[]" value="option3" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option3" class="chekcboxLable">Handling too many unique value contain categorical column</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option4" name="additional_options[]" value="option4" checked />';
+          checkboxContainer2.innerHTML += '<label for="option4" class="chekcboxLable">EDA</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option5" name="additional_options[]" value="option5" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option5" class="chekcboxLable">Dropping low variance features</label><br />';
+
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option7" name="additional_options[]" value="option7" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option7" class="chekcboxLable">Feature selection using RFE</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option8" name="additional_options[]" value="option8" checked />';
+          checkboxContainer2.innerHTML += '<label for="option8" class="chekcboxLable">Parameter Tuning</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option9" name="additional_options[]" value="option9" checked />';
+          checkboxContainer2.innerHTML += '<label for="option9" class="chekcboxLable">Model evaluation</label>';
+        } else if (selectedOption === "Regression car data") {
+          option2Dropdown.options[1].setAttribute("selected", "selected");
+          checkboxContainer2.innerHTML +=
+            "<label>Steps will perform: Uncheck if you do not want to perform that step</label><br />";
+
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option1" name="additional_options[]" value="option1" checked />';
+          checkboxContainer2.innerHTML += '<label for="option1" class="chekcboxLable">Data cleaning</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option2" name="additional_options[]" value="option2" checked />';
+          checkboxContainer2.innerHTML += '<label for="option2" class="chekcboxLable">Outliers Handling</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option3" name="additional_options[]" value="option3" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option3" class="chekcboxLable">Handling too many unique value contain categorical column</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option4" name="additional_options[]" value="option4" checked />';
+          checkboxContainer2.innerHTML += '<label for="option4" class="chekcboxLable">EDA</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option5" name="additional_options[]" value="option5" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option5" class="chekcboxLable">Dropping low variance features</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option6" name="additional_options[]" value="option6" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option6" class="chekcboxLable"> Handling Multicollinearity using VIF</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option7" name="additional_options[]" value="option7" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option7" class="chekcboxLable">Feature selection using RFE</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option8" name="additional_options[]" value="option8" checked />';
+          checkboxContainer2.innerHTML += '<label for="option8" class="chekcboxLable">Parameter Tuning</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option9" name="additional_options[]" value="option9" checked />';
+          checkboxContainer2.innerHTML += '<label for="option9" class="chekcboxLable">Model evaluation</label>';
+        } else if (selectedOption === "Classification Iris") {
+          option2Dropdown.options[2].setAttribute("selected", "selected");
+          checkboxContainer2.innerHTML +=
+            "<label>Steps will perform: Uncheck if you do not want to perform that step</label><br />";
+
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option1" name="additional_options[]" value="option1" checked />';
+          checkboxContainer2.innerHTML += '<label for="option1" class="chekcboxLable">Data cleaning</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option2" name="additional_options[]" value="option2" checked />';
+          checkboxContainer2.innerHTML += '<label for="option2" class="chekcboxLable">Outliers Handling</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option3" name="additional_options[]" value="option3" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option3" class="chekcboxLable">Handling too many unique value contain categorical column</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option4" name="additional_options[]" value="option4" checked />';
+          checkboxContainer2.innerHTML += '<label for="option4" class="chekcboxLable">EDA</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option5" name="additional_options[]" value="option5" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option5" class="chekcboxLable">Dropping low variance features</label><br />';
+
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option7" name="additional_options[]" value="option7" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option7" class="chekcboxLable">Feature selection using RFE</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option8" name="additional_options[]" value="option8" checked />';
+          checkboxContainer2.innerHTML += '<label for="option8" class="chekcboxLable">Parameter Tuning</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option9" name="additional_options[]" value="option9" checked />';
+          checkboxContainer2.innerHTML += '<label for="option9" class="chekcboxLable">Model evaluation</label>';
+        } else if (selectedOption === "Regression restaurant bill") {
+          option2Dropdown.options[1].setAttribute("selected", "selected");
+          checkboxContainer2.innerHTML +=
+            "<label>Steps will perform: Uncheck if you do not want to perform that step</label><br />";
+
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option1" name="additional_options[]" value="option1" checked />';
+          checkboxContainer2.innerHTML += '<label for="option1" class="chekcboxLable">Data cleaning</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option2" name="additional_options[]" value="option2" checked />';
+          checkboxContainer2.innerHTML += '<label for="option2" class="chekcboxLable">Outliers Handling</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option3" name="additional_options[]" value="option3" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option3" class="chekcboxLable">Handling too many unique value contain categorical column</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option4" name="additional_options[]" value="option4" checked />';
+          checkboxContainer2.innerHTML += '<label for="option4" class="chekcboxLable">EDA</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option5" name="additional_options[]" value="option5" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option5" class="chekcboxLable">Dropping low variance features</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option6" name="additional_options[]" value="option6" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option6" class="chekcboxLable"> Handling Multicollinearity using VIF</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option7" name="additional_options[]" value="option7" checked />';
+          checkboxContainer2.innerHTML +=
+            '<label for="option7" class="chekcboxLable">Feature selection using RFE</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option8" name="additional_options[]" value="option8" checked />';
+          checkboxContainer2.innerHTML += '<label for="option8" class="chekcboxLable">Parameter Tuning</label><br />';
+          checkboxContainer2.innerHTML +=
+            '<input type="checkbox" id="option9" name="additional_options[]" value="option9" checked />';
+          checkboxContainer2.innerHTML += '<label for="option9" class="chekcboxLable">Model evaluation</label>';
+        }
+
+        if (selectedOption === "Classification diabetes") {
+          field1.value = field11;
+          field2.value = field12;
+          field3.value = field13;
+          field4.value = field14;
+          field5.value = field15;
+          field6.value = field16;
+          field7.value = field17;
+          field8.value = field18;
+          field9.value = field19;
+          field10.value = field20;
+        } else if (selectedOption === "Regression car data") {
+          field1.value = field21;
+          field2.value = field22;
+          field3.value = field23;
+          field4.value = field24;
+          field5.value = field25;
+          field6.value = field26;
+          field7.value = field27;
+          field8.value = field28;
+          field9.value = field29;
+          field10.value = field30;
+        } else if (selectedOption === "Classification Iris") {
+          field1.value = field31;
+          field2.value = field32;
+          field3.value = field33;
+          field4.value = field34;
+          field5.value = field35;
+          field6.value = field36;
+          field7.value = field37;
+          field8.value = field38;
+          field9.value = field39;
+          field10.value = field40;
+        } else if (selectedOption === "Regression restaurant bill") {
+          field1.value = field41;
+          field2.value = field42;
+          field3.value = field43;
+          field4.value = field44;
+          field5.value = field45;
+          field6.value = field46;
+          field7.value = field47;
+          field8.value = field48;
+          field9.value = field49;
+          field10.value = field50;
+        }
+      }
+    </script>
+    <!--refresh page-->
+    <script>
+      function refreshPage() {
+        location.reload(); // Reload the page
+      }
+    </script>
+  </body>
+</html>
