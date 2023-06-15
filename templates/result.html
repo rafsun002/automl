@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Results</title>
+  </head>
+  <body>
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>CSV Upload</title>
+        <script>
+          function showUploadOption() {
+            document.getElementById("uploadOption").style.display = "block";
+          }
+
+          function hideUploadOption() {
+            document.getElementById("uploadOption").style.display = "none";
+          }
+
+          function selectExistingFileOption() {
+            document.getElementById("uploadOption").style.display = "none";
+            document.getElementById("existingFileOption").checked = true;
+          }
+        </script>
+      </head>
+      <body>
+        <!--
+    <h1>The accuracy is:</h1>
+    <p>accuracy: {{ accuracy }}</p>
+  
+  <h1>Download coded file:</h2><a href="/download">Download File</a>
+  
+  
+        <h1>Download File</h1>
+        <a href="{{ file_path }}" download>Download File</a>
+-->
+        <h1>Code Generated Successfully!</h1>
+        <p>Your Python code has been generated and is ready for download.</p>
+        <a href="/download" download="generated_code.py">
+          <button>Download Generated Code</button>
+        </a>
+      </body>
+    </html>
+  </body>
+</html>
