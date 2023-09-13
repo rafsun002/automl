@@ -56,7 +56,7 @@ def upload():
     if file_option == 'upload':
         file = request.files['file']
         tmpDF = pd.read_csv(file)
-        fileWrite.write(f'tmpDF=pd.read_csv({file})\n')
+        fileWrite.write(f'tmpDF=pd.read_csv("Enter the file path/ file_name.extension")\n')
         fileWrite.write("print(tmpDF)\n\n\n")
         
     else:
@@ -95,11 +95,8 @@ def upload():
     fileWrite.write("print(tmpDF.columns)\n\n")
     fileWrite.write("print(tmpDF.info())\n\n")
     fileWrite.write("print(tmpDF.isnull().sum()/tmpDF.shape[0]*100)\n\n")
-    fileWrite.write("print(tmpDF.isnull().sum())\n\n")
-    fileWrite.write('#Performing pandas profiling\n')
-    fileWrite.write('from pandas_profiling import ProfileReport\n')
-    fileWrite.write('prof=ProfileReport(tmpDF)\n')
-    fileWrite.write('prof.to_file(output_file="profile_pandas.html)\n\n\n')
+    fileWrite.write("print(tmpDF.isnull().sum())\n\n\n")
+    
     
     fileWrite.write("############################################\n")
     fileWrite.write("#**********Taking all the inputs***********\n")
@@ -111,7 +108,8 @@ def upload():
     dateTimeColsNames = request.form['dateTimeColsNames'].split(",")
     fileWrite.write(f'dateTimeColsNames={dateTimeColsNames}\n\n')
     drop_nan_col_bound = request.form['drop_nan_col_bound']
-    fileWrite.write(f'drop_nan_col_bound={drop_nan_col_bound}\n\n')
+    drop_nan_col_bound = float(drop_nan_col_bound)  # Cast to float
+    fileWrite.write(f'drop_nan_col_bound=float({drop_nan_col_bound})\n\n')
     num_col_nm_strip=request.form['num_col_nm_strip'].split(",")
     fileWrite.write(f'num_col_nm_strip={num_col_nm_strip}\n\n')
     num_col_nm_strip_2=request.form['num_col_nm_strip_2'].split(",")
@@ -233,9 +231,11 @@ def upload():
             else:
                 dateTimeColsNames.clear()  
                 dateTimeColsNames.extend(dl)
+                ''' del kor
                 fileWrite.write(f"dl={dl}\n")
                 fileWrite.write(f"dateTimeColsNames.clear()\n")
                 fileWrite.write(f"dateTimeColsNames.extend(dl)\n\n")
+                '''
             del dl
 
 
@@ -839,7 +839,8 @@ def upload():
             ######################################################################
             if tmpDF.isna().any().any():
                 if tmpDF[target_col_name].isnull().sum()/tmpDF.shape[0]*100>=17:
-                    fileWrite.write("'''#Dropping target column row if it's contain missing value more than 17% '''\n")
+                    fileWrite.write("######################################################################\n")
+                    fileWrite.write("'''#Dropping target column row if it's contain missing value more than 17% '''\n\n")
                     tmpDF.dropna(subset=[target_col_name],inplace=True)
                     fileWrite.write(f'tmpDF.dropna(subset=["{target_col_name}"],inplace=True)\n\n')            
 
@@ -937,7 +938,7 @@ def upload():
                             else:
                                 pass
                         
-                    fileWrite.write("#**** slecting columns and columns value to clean data ***** \n")
+                    fileWrite.write("#**** selecting columns and columns value to clean data ***** \n")
                     fileWrite.write(f'col_name_fill_nan="{col_name_fill_nan}"\n')
                     fileWrite.write(f'col_data_fill_nan={col_data_fill_nan}\n\n')
                     
@@ -947,7 +948,8 @@ def upload():
                     Catego_cln_dataFrame=None
                     nan_contain_catego_col=[]        
                     if tmpDF[tmpDF.select_dtypes(include="object").columns].isna().any().any():
-                        fileWrite.write('#******* Filling categorical missing data *******\n')
+                        fileWrite.write('##################################################\n')
+                        fileWrite.write('#******* Filling categorical missing data *******\n\n')
 
 
                         for kl in col_need_to_cln:
@@ -1020,7 +1022,8 @@ def upload():
                     numeric_cleand_dataframe=None
                     nan_contain_numeric_col=[]        
                     if tmpDF[tmpDF.select_dtypes(include=["int64","float64","int32","float32"]).columns].isna().any().any():
-                        fileWrite.write("#******** filling numerical missing data ***********\n")
+                        fileWrite.write("####################################################\n")
+                        fileWrite.write("#******** filling numerical missing data ***********\n\n")
 
                         for kll in col_need_to_cln:
                             if kll in tmpDF.select_dtypes(include=["int64","float64","int32","float32"]).columns:
@@ -1079,7 +1082,7 @@ def upload():
                     ######################################################################
                     ###############Creating the clean dataset########################## 
                     ######################################################################
-                    fileWrite.write("#********** Creating clean dataset ***************")
+                    fileWrite.write("#********** Creating clean dataset ***************\n")
 
 
 
@@ -1193,7 +1196,7 @@ def upload():
             if len(num_col_for_out)==0:
                 pass
             else:
-                fileWrite.write(f'plt.subplot({math.ceil(len(num_col_for_out)/3)},3,nnn)\n')
+                fileWrite.write(f'plt.subplot({math.ceil(len(num_col_for_out)/3)},3,{nnn})\n')
                 fileWrite.write(f'sns.distplot(df["{num_col_for_out[j]}"])\n')
                 fileWrite.write('plt.subplots_adjust(left=0.0,bottom=0.0,right=2.0,top=3.0,wspace=0.4,hspace=0.4)\n\n')
                 nnn=nnn+1
@@ -1210,7 +1213,7 @@ def upload():
             if len(num_col_for_out)==0:
                 pass
             else:
-                fileWrite.write(f'plt.subplot({math.ceil(len(num_col_for_out)/3)},3,nnn)\n')
+                fileWrite.write(f'plt.subplot({math.ceil(len(num_col_for_out)/3)},3,{nnn})\n')
                 fileWrite.write(f'sns.boxplot(df["{num_col_for_out[j]}"])\n')
                 fileWrite.write('plt.subplots_adjust(left=0.0,bottom=0.0,right=2.0,top=3.0,wspace=0.4,hspace=0.4)\n\n')
                 nnn=nnn+1
@@ -1306,7 +1309,7 @@ def upload():
 
                         fileWrite.write(f'for lk6 in range(len(data)):\n')
                         fileWrite.write(f'    if data[lk6]>{upper_limit}:\n')
-                        fileWrite.write(f'        df["{col_nm}"].replace(data[lk6],{upper_limit},inplace=True\n')
+                        fileWrite.write(f'        df["{col_nm}"].replace(data[lk6],{upper_limit},inplace=True)\n')
                         fileWrite.write(f'    else:\n')
                         fileWrite.write(f'        pass\n\n')
 
@@ -1438,7 +1441,7 @@ def upload():
         pass
     
     #######################################################
-    #********************* Handeling high cardinality ***************
+    #********************* Handling high cardinality ***************
     ########################################################
     if "option3" in additional_options:
         fileWrite.write("#############################################################\n")
@@ -1541,7 +1544,7 @@ def upload():
             if len(eda_cat_co)==0:
                 pass
             else:
-                fileWrite.write(f'plt.subplot({math.ceil(len(eda_cat_co)/2)},2,nn)\n')
+                fileWrite.write(f'plt.subplot({math.ceil(len(eda_cat_co)/2)},2,{nn})\n')
                 fileWrite.write(f'df["{eda_cat_co[j]}"].value_counts().plot(kind="pie",autopct="%1.2f%%",colors=sns.color_palette("bright"),pctdistance=0.8)\n')
                 fileWrite.write('plt.subplots_adjust(left=-0.2,bottom=-0.2,right=2.4,top=3.0,wspace=0.0,hspace=0.0)\n\n')
                 nn=nn+1
@@ -1594,7 +1597,7 @@ def upload():
             if len(eda_num_co)==0:
                 pass
             else:
-                fileWrite.write(f'plt.subplot({math.ceil(len(eda_num_co)/3)},3,nnn)\n')
+                fileWrite.write(f'plt.subplot({math.ceil(len(eda_num_co)/3)},3,{nnn})\n')
                 fileWrite.write(f'plt.hist(df["{eda_num_co[j]}"])\n')
                 fileWrite.write('plt.subplots_adjust(left=0.0,bottom=0.0,right=2.0,top=3.0,wspace=0.4,hspace=0.4)\n\n')
                 nnn=nnn+1
@@ -1763,10 +1766,8 @@ def upload():
     
     allCatCol=list(df.select_dtypes(include="object").columns)
     if len(allCatCol)==0:
-        numerical_column_df=df.select_dtypes(include=["int64","float64","int32","float32"])
-        fileWrite.write('numerical_column_df=df.select_dtypes(include=["int64","float64","int32","float32"])\n')
-        final_dataset=numerical_column_df
-        fileWrite.write('final_dataset=numerical_column_df\n\n\n')
+        final_dataset=df
+        fileWrite.write('final_dataset=df\n\n\n')
     else:
         fileWrite.write("#######################################################\n")
         fileWrite.write("#*********************** Encoding ********************\n")
@@ -1774,17 +1775,16 @@ def upload():
         fileWrite.write("from sklearn.preprocessing import OneHotEncoder\n")
         fileWrite.write("from sklearn.preprocessing import OrdinalEncoder\n\n")    
         fileWrite.write('allCatCol=list(df.select_dtypes(include="object").columns)\n\n')
-        
+
         #If target column is categorical then appending in rankcol for classification problem
         if target_col_name in allCatCol:
             if rank_col[0].lower()=="none":
                 rank_col.clear()
                 rank_col.append(target_col_name)
-                fileWrite.write('rank_col.clear()\n')
-                fileWrite.write('rank_col.append(target_col_name)\n\n')
+                
             else:
                 rank_col.append(target_col_name)
-                fileWrite.write('rank_col.append(target_col_name)\n\n')
+                
         else:
             pass
 
@@ -1799,24 +1799,24 @@ def upload():
             categorical_column=allCatCol
             fileWrite.write(f'categorical_column={allCatCol}\n')
         else:
-            fileWrite.write("#********** Performing ordinal encoding *************")
+            fileWrite.write("#********** Performing ordinal encoding *************\n")
             tmp_col_df=df.select_dtypes(include="object")
             fileWrite.write('tmp_col_df=df.select_dtypes(include="object")\n')
             categorical_column_1=tmp_col_df.drop(rank_col,axis=1)
-            fileWrite.write(f'categorical_column_1=tmp_col_df.drop({rank_col},axis=1)\n')
+            fileWrite.write(f'categorical_column_1=tmp_col_df.drop("{rank_col[0]}",axis=1)\n')
             categorical_column=list(categorical_column_1.columns)
             fileWrite.write(f'categorical_column=list(categorical_column_1.columns)\n')
             categorical_column_2=tmp_col_df[rank_col]
-            fileWrite.write(f'categorical_column_2=tmp_col_df[rank_col]\n')
+            fileWrite.write(f'categorical_column_2=tmp_col_df["{rank_col[0]}"]\n')
             ordinal = OrdinalEncoder()
             fileWrite.write('ordinal = OrdinalEncoder()\n')
             categorical_column_2[rank_col]=ordinal.fit_transform(categorical_column_2)
-            fileWrite.write(f'categorical_column_2[rank_col]=ordinal.fit_transform(categorical_column_2)\n')
-            df.drop(df[rank_col], axis=1,inplace=True)
-            fileWrite.write(f'df.drop(df[rank_col], axis=1,inplace=True)\n')
+            fileWrite.write(f'categorical_column_2[{rank_col[0]}]=ordinal.fit_transform(categorical_column_2)\n')
+            df.drop("{rank_col[0]}", axis=1,inplace=True)
+            fileWrite.write(f'df.drop("{rank_col[0]}", axis=1,inplace=True)\n')
             df=pd.merge(df,categorical_column_2,left_index=True,right_index=True)
             fileWrite.write('df=pd.merge(df,categorical_column_2,left_index=True,right_index=True)\n\n')
-            
+
 
 
         n=0
@@ -1827,29 +1827,36 @@ def upload():
                 eno_dt={v[0]:0,v[1]:1,v[2]:2}
                 df[categorical_column[n]]=df[categorical_column[n]].map(eno_dt)
                 fileWrite.write(f'df["{categorical_column[n]}"]=df["{categorical_column[n]}"].map({eno_dt})\n')
-                del eno_dt
+                
 
             elif len(v)==2:
                 eno_dt={v[0]:0,v[1]:1}
                 df[categorical_column[n]]=df[categorical_column[n]].map(eno_dt)
                 fileWrite.write(f'df["{categorical_column[n]}"]=df["{categorical_column[n]}"].map({eno_dt})\n')
-                del eno_dt
+                
             else:
                 nl.append(categorical_column[n])
 
             n=n+1
-            del v
             fileWrite.write("\n")
 
 
         ll=[]
         encoding= OneHotEncoder(sparse=False)
-        fileWrite.write('encoding= OneHotEncoder(sparse=False, drop="first")\n')
+        fileWrite.write('encoding= OneHotEncoder(sparse=False)\n')
         if len(nl)>=1:
             fileWrite.write("#*********** Performing one-Hot encoding ************\n")
-            result_encod=encoding.fit_transform(df[nl])
-            fileWrite.write(f'result_encod=encoding.fit_transform(df[{nl}])\n')
-            dd=pd.get_dummies(df[nl],drop_first=True).keys()
+            if len(nl)==1:
+                day_data = df[nl[0]].values.reshape(-1, 1)
+                result_encod=encoding.fit_transform(df[nl])
+                fileWrite.write(f"result_encod=encoding.fit_transform(df['{nl[0]}'])\n")
+                
+            else:
+                result_encod=encoding.fit_transform(df[{nl}])
+                fileWrite.write(f'result_encod=encoding.fit_transform(df[{nl}])\n')
+                
+            
+            dd=pd.get_dummies(df[nl]).keys()
             for i in dd:
                 ll.append(i)
             dataFrame_encode_col=pd.DataFrame(result_encod,columns=ll)
@@ -1859,28 +1866,18 @@ def upload():
             for i in numerical_column:
                 npl.append(i)
             numeric_col=df[npl]
-            
+
             fileWrite.write(f'numeric_col=df[{npl}]\n')
             #Create dataset
             final_dataset=pd.merge(dataFrame_encode_col,numeric_col,left_index=True,right_index=True)
             fileWrite.write('final_dataset=pd.merge(dataFrame_encode_col,numeric_col,left_index=True,right_index=True)\n\n\n')
-            del result_encod
-            del dd
-            del dataFrame_encode_col
-            del numerical_column
-            #del npl
+            
         else:
             numerical_column_df=df.select_dtypes(include=["int64","float64","int32","float32"])
             fileWrite.write('numerical_column_df=df.select_dtypes(include=["int64","float64","int32","float32"])\n')
             final_dataset=numerical_column_df
             fileWrite.write('final_dataset=numerical_column_df\n\n\n')
-            del numerical_column_df 
-        del categorical_column
-        del n
-        del nl
-        del ll
-        del encoding
-    del allCatCol
+    
 
     
     #######################################################
@@ -1958,12 +1955,7 @@ def upload():
 
                 else:
                     pass
-                del variances 
-                del v
-                del variances_sorted
-                del selector
-                del low_variance_idx
-                del low_variance_features
+                
             else:
                 pass
         except Exception as e:
